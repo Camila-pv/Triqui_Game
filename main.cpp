@@ -3,8 +3,10 @@
 
 int main() {
   Tablero t;
-  ficha pair[9];
-  t.assingment(6, pair[4]);
+  char X = 'x';
+  t.assingment(8, X);
   t.display();
+
+  std::cout << posi_random();
   return 0;
 }
