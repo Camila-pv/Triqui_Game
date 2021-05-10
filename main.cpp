@@ -4,8 +4,8 @@
 int main() {
   Tablero t;
   char X = 'x';
-  t.assingment(8, X);
-  t.display();
+  t.machine();
+  
 
   std::cout << posi_random();
   return 0;
