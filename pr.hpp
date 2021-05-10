@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <ctime>
+#include <stdlib.h>
+//#include <time.h>
 
 struct ficha {
   char simbol; //X o O
@@ -21,6 +23,8 @@ public:
   //~Tablero();
   void display();
   void assingment(int i, char simbolo);
+  void machine();
+  int middle();
 
 };
 
