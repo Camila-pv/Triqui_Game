@@ -32,16 +32,38 @@ void Tablero::assingment(int i, char simbolo) {
   tablero[i-1] = simbolo;
 }
 
-/*
+
 int posi_random(){
-  int num = 0;
+  int num;
   srand(time(0));
-  num = 1 + (rand() % 9);
-  //std::cout << num << '\n';
-  if(num == 1 || num == 3 || num == 7 || num == 9) {
-    return num;
-  }else {
-    return posi_random();
+  num = 1 + rand() % (10 - 1);
+  if(num == 3 || num == 7 || num == 9)
+      return num;
+  return 1;
+}
+
+
+int Tablero::middle(){
+
+}
+
+
+void Tablero::machine(){
+  int posicion = posi_random();
+  assingment(posicion,'X');
+  display();
+  int count = 1;
+  while(count != 8){
+    if(count %2 == 0){
+
+    }else{
+      int p;
+      std::cout<<"Introduce la casilla: ";
+      std::cin>> p;
+      assingment(p, 'O');
+      display();
+      count++;
+
+    }
   }
 }
-*/
