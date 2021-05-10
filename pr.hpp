@@ -22,6 +22,7 @@ public:
   Tablero();
   //~Tablero();
   void display();
+  void instruction();
   void assingment(int i, char simbolo);
   void machine();
   int middle();

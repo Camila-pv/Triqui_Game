@@ -28,6 +28,23 @@ void Tablero::display(){
   }
 }
 
+void Tablero::instruction(){
+  bool f1e = true;
+  std::cout << " -----------\n";
+  for(int i = 0; i < 9; i++) {
+    if(f1e){
+        std::cout<< "  " << i;
+        f1e = false;
+    }else if((i+1)%3 == 0) {
+      std::cout<< " | "<< i <<"\n";
+      std::cout << " -----------\n";
+      f1e = true;
+    }else{
+      std::cout << " | "<< i;
+    }
+  }
+}
+
 void Tablero::assingment(int i, char simbolo) {
   tablero[i-1] = simbolo;
 }
