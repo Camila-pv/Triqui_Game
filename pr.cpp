@@ -84,3 +84,47 @@ void Tablero::machine(){
     }
   }
 }
+
+//Determina si toda la cuadricula esta llena con 'X' o 'O'
+bool Tablero::full(){
+  for(int i = 0; i < 9; i++){
+    if(tablero[i] != 'O' && tablero[i] != 'X')
+      return false;
+  }
+  return true;
+}
+
+//Determina quien gano
+//Retorna 'X'-> gana maquina
+//Retorna 'O'-> gana jugador
+//Retorna 'N'-> ninguno gano
+char Tablero::won(){
+  //Fila
+  for(int i = 0; i < 9 ; i = i+3){
+    //std::cout << "holaaaa" <<i <<'\n';
+    if((tablero[i]==tablero[i+1]) && (tablero[i+1]== tablero[i+2]) && (tablero[i]== 'O'))
+      return 'O';
+    if((tablero[i]==tablero[i+1]) && (tablero[i+1]== tablero[i+2]) && (tablero[i]== 'X'))
+      return 'X';
+  }
+
+  //Columna
+  for(int i = 0; i < 3 ; i++){
+    if(tablero[i]==tablero[i+3] && tablero[i+3]== tablero[i+6] && tablero[i+6]== 'O')
+      return 'O';
+    if(tablero[i]==tablero[i+3] && tablero[i+3]== tablero[i+6] && tablero[i+6]== 'X')
+      return 'X';
+  }
+
+  //Diagonales
+  if(tablero[0]==tablero[4] && tablero[4]== tablero[8] && tablero[8]== 'O')
+    return 'O';
+  if(tablero[0]==tablero[4] && tablero[4]== tablero[8] && tablero[8]== 'X')
+    return 'X';
+
+  if(tablero[2]==tablero[4] && tablero[4]== tablero[6] && tablero[6]== 'O')
+      return 'O';
+  if(tablero[2]==tablero[4] && tablero[4]== tablero[6] && tablero[6]== 'X')
+      return 'X';
+  return 'N';
+}
