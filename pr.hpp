@@ -25,7 +25,11 @@ public:
   void instruction();
   void assingment(int i, char simbolo);
   void machine();
-  int middle();
+  int middle();  
+  bool full();
+  char won();
+
+
 
 };
 
