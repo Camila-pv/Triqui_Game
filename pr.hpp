@@ -24,13 +24,12 @@ public:
   void display();
   void instruction();
   void assingment(int i, char simbolo);
-  void machine();
-  int middle();  
+  void thinker();
   bool full();
   char won();
-
-
-
+  bool winner();
+  int translate_won();
+  int minimax(int deep, bool turn);
 };
 
 int posi_random();

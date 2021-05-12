@@ -59,30 +59,21 @@ int posi_random(){
   return 1;
 }
 
-
-int Tablero::middle(){
-
-}
-
-
-void Tablero::machine(){
-  int posicion = posi_random();
-  assingment(posicion,'X');
-  display();
-  int count = 1;
-  while(count != 8){
-    if(count %2 == 0){
-
-    }else{
-      int p;
-      std::cout<<"Introduce la casilla: ";
-      std::cin>> p;
-      assingment(p, 'O');
-      display();
-      count++;
-
+void Tablero::thinker(){
+  int best_position;
+  int best_score = -100;
+  for(int i = 0; i < 9; i++) {
+    if(tablero[i] == '-') {
+      tablero[i] = 'X';
+      int score = minimax(0, false);
+      tablero[i] = '-';
+      if(score > best_score){
+        best_score = score;
+        best_position = i;
+      }
     }
   }
+  assingment(best_position, 'X');
 }
 
 //Determina si toda la cuadricula esta llena con 'X' o 'O'
@@ -126,5 +117,55 @@ char Tablero::won(){
       return 'O';
   if(tablero[2]==tablero[4] && tablero[4]== tablero[6] && tablero[6]== 'X')
       return 'X';
-  return 'N';
+
+  //tablero lleno
+  if(full()) {
+    return 'N';//no full
+  }
+  return 'T';
+}
+
+int Tablero::translate_won() {
+  char plyr = won();
+  if(plyr == 'X') {//gana X
+    return 1;
+  }else if(plyr == 'O'){//gana O
+    return -1;
+  }else if(plyr == 'N'){
+    return 5;//no hay ganador aun
+  }else{
+    return 0;//empatados
+  }
+}
+
+int Tablero::minimax(int deep, bool turn) {
+  int score = translate_won();
+  //turno de la maquina ->max
+  if(turn == true) {// esta maximizando
+    int best_score = -100;
+    for(int i = 0; i < 9; i++) {
+      if(tablero[i] == '-') {
+        tablero[i] = 'X';
+        score = minimax(deep+1, false);
+        tablero[i] = '-';
+        if(score > best_score) {
+          best_score = score;
+        }
+      }
+    }
+    return best_score;
+  }else {//turno del usuario->min
+    int best_score = 100;
+    for(int i = 0; i < 9; i++) {
+      if(tablero[i] == '-') {
+        tablero[i] = 'O';
+        score = minimax(deep+1, true);
+        tablero[i] = '-';
+        if(score < best_score) {
+          best_score = score;
+        }
+      }
+    }
+    return best_score;
+  }
 }
