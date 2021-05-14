@@ -74,12 +74,13 @@ void Tablero::thinker(){
     }
   }
   assingment(best_position, 'X');
+  display();
 }
 
 //Determina si toda la cuadricula esta llena con 'X' o 'O'
 bool Tablero::full(){
   for(int i = 0; i < 9; i++){
-    if(tablero[i] != 'O' && tablero[i] != 'X')
+    if(tablero[i] == '-')
       return false;
   }
   return true;
@@ -120,9 +121,9 @@ char Tablero::won(){
 
   //tablero lleno
   if(full()) {
-    return 'N';//no full
+    return 'T';//empatados
   }
-  return 'T';
+  return 'N';//no full
 }
 
 int Tablero::translate_won() {
@@ -139,14 +140,15 @@ int Tablero::translate_won() {
 }
 
 int Tablero::minimax(int deep, bool turn) {
-  int score = translate_won();
+  std::cout << "hola";
+  int game_state = translate_won();
   //turno de la maquina ->max
-  if(turn == true) {// esta maximizando
+  if(turn) {// esta maximizando
     int best_score = -100;
     for(int i = 0; i < 9; i++) {
       if(tablero[i] == '-') {
         tablero[i] = 'X';
-        score = minimax(deep+1, false);
+        int score = minimax(deep+1, false);
         tablero[i] = '-';
         if(score > best_score) {
           best_score = score;
@@ -159,7 +161,7 @@ int Tablero::minimax(int deep, bool turn) {
     for(int i = 0; i < 9; i++) {
       if(tablero[i] == '-') {
         tablero[i] = 'O';
-        score = minimax(deep+1, true);
+        int score = minimax(deep+1, true);
         tablero[i] = '-';
         if(score < best_score) {
           best_score = score;
