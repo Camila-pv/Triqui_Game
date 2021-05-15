@@ -14,6 +14,15 @@ int main() {
     int pos;
     std::cin >> pos;
     t.assingment(pos, 'O');
+    if(t.translate_won()== 10)
+      std::cout <<"The machine won";
+    else if(t.translate_won()== -10)
+      std::cout <<"The player won";
+    else
+      std::cout <<"Tie !!"<<std::endl;
+    std::cout <<"\n";
+    std::cout <<"\n";
+
     t.display();
     t.thinker();
   }
