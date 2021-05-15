@@ -145,7 +145,7 @@ int Tablero::minimax(int deep, bool turn){
       }
     }
     //std::cout<< "machine"<<best_score;
-    return best_position;
+    return best_score;
   }else{//turno del usuario->min
     int best_score = 100;
     int best_position;
@@ -161,12 +161,12 @@ int Tablero::minimax(int deep, bool turn){
         }
       }
     }
-    return best_position;
+    return best_score;
   }
 }
 
 void Tablero::thinker(){
-/**
+
   int best_position;
   int best_score = -100;
   for(int i = 0; i < 9; i++) {
@@ -180,7 +180,6 @@ void Tablero::thinker(){
       }
     }
   }
-**/
   //int best_position = minimax(0, false);
   assingment(best_position+1, 'X');
   display();
