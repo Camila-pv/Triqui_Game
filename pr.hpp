@@ -4,17 +4,17 @@
 #include <iostream>
 #include <ctime>
 #include <stdlib.h>
-//#include <time.h>
-
+/**
 struct ficha {
   char simbol; //X o O
   int pos;// 1-9
 
 };
-
+**/
 class Tablero {
 private:
   char tablero[9];
+  char simbol; //X o O
   //char fichas = ['X', 'O'];
 
   char Triqui_index(int i);
