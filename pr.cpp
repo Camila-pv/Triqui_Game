@@ -1,5 +1,6 @@
 #include "pr.hpp"
 
+
 Tablero::Tablero(){
   for(int i = 0; i < 9; i++) {
     tablero[i] = '-';
@@ -117,70 +118,142 @@ int Tablero::translate_won() {
   if(plyr == 'X') {//gana X
     return 10;
   }else if(plyr == 'O'){//gana O
-    return -10;
+    return 1;
   }else if(plyr == 'N'){
     return -30;//no hay ganador aun
   }else{
-    return -25;//empatados
+    return 5;//empatados
   }
 }
 
-int Tablero::minimax(int deep, bool turn){
-  if(translate_won()!=-30){
-    return translate_won();
+std::vector<int> Tablero::minimax(int deep, bool turn){
+  if(translate_won() != -30){
+    std::vector<int> vec(2);
+    vec[0] = deep; //profundidad
+    vec[1] = translate_won(); //valor
+    return vec;
   }
+
   //turno de la maquina ->max
   if(turn) {// esta maximizando
-    int best_position;
-    int best_score = -100;
+    std::vector<int> vec(2);
+    vec[1] = -30;
+    vec[0] = 1e3;
     for(int i = 0; i < 9; i++){
       if(tablero[i] == '-'){
         tablero[i] = 'X';
-        int score = minimax(deep+1, false);
+        std::vector<int> new_vector;
+        new_vector = minimax(deep+1, false);
         tablero[i] = '-';
-        if(score > best_score){
-          best_score = score;
-          best_position = i;
+        if(new_vector[0] < vec[0]){
+          vec[0] = new_vector[0];
+          vec[1] = new_vector[1];
+        }else if(new_vector[0] == vec[0]){
+          if(new_vector[1] > vec[1]){
+            vec[0] = new_vector[0];
+            vec[1] = new_vector[1];
+          }
         }
       }
     }
-    //std::cout<< "machine"<<best_score;
-    return best_score;
+    //std::cout<<"x"<< vec[0]<<" "<<vec[1]<<" "<<vec[2]<<std::endl;
+    return vec;
   }else{//turno del usuario->min
-    int best_score = 100;
-    int best_position;
+    std::vector<int> vec(2);
+    vec[1] = 30;
+    vec[0] = 1e3;
     for(int i = 0; i < 9; i++) {
       if(tablero[i] == '-') {
         tablero[i] = 'O';
-        int score = minimax(deep+1, true);
+        std::vector<int> new_vector;
+        new_vector = minimax(deep+1, true);
         tablero[i] = '-';
-        if(score < best_score){
-          best_score = score;
-          best_position = i;
-
+        if(new_vector[0] < vec[0]){
+          vec[0] = new_vector[0];
+          vec[1] = new_vector[1];
+        }
+        else if(new_vector[0] == vec[0]){
+          if(std::abs(new_vector[1]) < vec[1]){
+            vec[0] = new_vector[0];
+            vec[1] = new_vector[1];
+          }
         }
       }
     }
-    return best_score;
+    //std::cout<<"min"<< vec[0]<<" "<<vec[1]<<" "<<vec[2]<<std::endl;
+    return vec;
   }
 }
 
 void Tablero::thinker(){
-
-  int best_position;
-  int best_score = -100;
+  int best_position, best_deep = 1e4, best_score = -1, max_score = -1;
+  std::vector<int> score(9,-1);
+  std::vector<int> deep(9,1e4);
+  std::vector<int> vec;
+  std::cout << "Position Deep Score" << std::endl;
   for(int i = 0; i < 9; i++) {
     if(tablero[i] == '-') {
       tablero[i] = 'X';
-      int score = minimax(0, false);
+      vec = minimax(0,false);
+      std::cout << i << " " << vec[0] << " " << vec[1] << std::endl;
       tablero[i] = '-';
-      if(score > best_score){
-        best_score = score;
-        best_position = i;
-      }
+      score[i] = vec[1];
+      deep[i] = vec[0];
     }
   }
-  //int best_position = minimax(0, false);
+
+  // Se busca max_score
+  for(int i = 0; i < 9 ;i++){
+    if(score[i] > max_score)
+      max_score = score[i];
+  }
+  std::cout<<"max: " <<max_score<<std::endl;
+  if(max_score == 1){
+    std::cout<<"entre" <<std::endl;
+    best_deep = -1;
+    for(int i = 0; i < 9 ;i++){
+      if(best_deep < deep[i] && deep[i] < 1e4){
+        std::cout<<"entre al if" <<std::endl;
+        best_deep = deep[i];
+        best_position = i;
+        best_score = score[i];
+        std::cout << "......"<<best_position <<  " " << best_deep << ' ' << best_score << std::endl;
+      }
+    }
+    std::cout << "----"<<best_position <<  " " << best_deep << ' ' << best_score << std::endl;
+  }else{
+    // DO/ WHILE -> primero se hace accion del do y luego se rectifica si el argumento del while se cumple para volver a hacer el DO
+    do{   // Si el max_score es mayor a 1 entonces busca la profundidad minima donde best_score sea mayor a 1
+      for(int i=0; i<9; i++){
+        if(best_deep == deep[i]){
+          deep[i] = 1e4;
+        }
+      }
+      best_deep = 1e4;
+
+      for(int i = 0; i < 9; i++){
+        if(best_deep > deep[i]){
+          best_deep = deep[i];
+          best_position = i;
+          best_score = score[i];
+        }
+        else if(best_deep == deep[i]){
+          if(score[i] > best_score){
+            best_score = score[i];
+            best_position = i;
+            best_deep = deep[i];
+          }
+        }
+      }
+
+    }while(best_score <= 1);
+  }
+
+
+
+  std::cout << best_position <<  " " << best_deep << ' ' << best_score << std::endl;
+  //std::vector<int> vec;
+  //vec = minimax(0,false);
   assingment(best_position+1, 'X');
   display();
 }

@@ -4,13 +4,11 @@
 #include <iostream>
 #include <ctime>
 #include <stdlib.h>
-/**
-struct ficha {
-  char simbol; //X o O
-  int pos;// 1-9
+#include <vector>
+#include <cmath>
+#include <limits>
 
-};
-**/
+
 class Tablero {
 private:
   char tablero[9];
@@ -29,7 +27,7 @@ public:
   char won();
   bool winner();
   int translate_won();
-  int minimax(int deep, bool turn);
+  std::vector<int> minimax(int deep, bool turn);
 };
 
 int posi_random();
