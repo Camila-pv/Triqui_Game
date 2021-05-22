@@ -191,11 +191,12 @@ void Tablero::thinker(){
   std::vector<int> deep(9,1e4);
   std::vector<int> vec;
   std::cout << "Position Deep Score" << std::endl;
+  // Guarda la profundidad y el valor de cada rama usando minimax y en su respectivo vectores
   for(int i = 0; i < 9; i++) {
     if(tablero[i] == '-') {
       tablero[i] = 'X';
       vec = minimax(0,false);
-      std::cout << i << " " << vec[0] << " " << vec[1] << std::endl;
+      std::cout << i << "     " << vec[0] << "     " << vec[1] << std::endl;
       tablero[i] = '-';
       score[i] = vec[1];
       deep[i] = vec[0];
@@ -207,22 +208,21 @@ void Tablero::thinker(){
     if(score[i] > max_score)
       max_score = score[i];
   }
-  std::cout<<"max: " <<max_score<<std::endl;
+
+  // Caso en donde la profundidad sea igual 1 y pero se gane en otra profundidad
   if(max_score == 1){
-    std::cout<<"entre" <<std::endl;
     best_deep = -1;
     for(int i = 0; i < 9 ;i++){
       if(best_deep < deep[i] && deep[i] < 1e4){
-        std::cout<<"entre al if" <<std::endl;
         best_deep = deep[i];
         best_position = i;
         best_score = score[i];
-        std::cout << "......"<<best_position <<  " " << best_deep << ' ' << best_score << std::endl;
       }
     }
-    std::cout << "----"<<best_position <<  " " << best_deep << ' ' << best_score << std::endl;
   }else{
+
     // DO/ WHILE -> primero se hace accion del do y luego se rectifica si el argumento del while se cumple para volver a hacer el DO
+
     do{   // Si el max_score es mayor a 1 entonces busca la profundidad minima donde best_score sea mayor a 1
       for(int i=0; i<9; i++){
         if(best_deep == deep[i]){
@@ -252,8 +252,6 @@ void Tablero::thinker(){
 
 
   std::cout << best_position <<  " " << best_deep << ' ' << best_score << std::endl;
-  //std::vector<int> vec;
-  //vec = minimax(0,false);
   assingment(best_position+1, 'X');
   display();
 }
